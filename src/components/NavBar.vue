@@ -1,6 +1,8 @@
 <template>
   <nav class="nav-bar">
-    <h2 class="title">Superheroes</h2>
+    <router-link :to="`/`">
+      <h2 class="title">Superheroes</h2>
+    </router-link>
     <img src="../assets/icons/menu.svg" alt="Menu" class="menu-icon" />
     <h3 class="menu">Menu</h3>
     <div class="search-wrapper">
@@ -16,16 +18,22 @@
 .nav-bar {
   display: flex;
   align-items: center;
-  margin: 20px;
+  padding: 10px;
   background-color: rgb(215, 224, 250);
 }
 
 .title {
   margin: 0 10px;
+  cursor: pointer;
 }
 
 .menu {
   margin-right: 10px;
+  cursor: pointer;
+}
+
+.menu-icon {
+  cursor: pointer;
 }
 
 .search-wrapper {
