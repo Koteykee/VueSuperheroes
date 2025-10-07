@@ -33,5 +33,6 @@ superheroes.value = await getSuperheroes();
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  list-style: none;
 }
 </style>
