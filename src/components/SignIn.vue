@@ -22,28 +22,39 @@
     </div>
     <div v-if="isSignup === 'login'" class="login-wrapper">
       <label for="username-email">Username or Email</label>
-      <input type="text" id="username-email" />
+      <input type="text" id="username-email" v-model="userLogin" />
       <label for="password-login">Password</label>
-      <input type="password" id="password-login" />
+      <input type="password" id="password-login" v-model="userPassword" />
       <p v-if="error !== ''" class="error">{{ error }}</p>
-      <button class="button">Log in</button>
+      <button class="button" @click="login">Log in</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/counter";
 
 const username = ref("");
 const email = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
 const error = ref("");
+const userLogin = ref("");
+const userPassword = ref("");
 const isSignup = ref("signup");
-const userList = ref([]);
+
+const router = useRouter();
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.loadFromStorage();
+});
 
 const toggleSignin = (val) => {
   isSignup.value = val;
+  error.value = "";
 };
 
 const addUser = () => {
@@ -55,6 +66,78 @@ const addUser = () => {
     error.value = "Fill in all fields";
     return;
   }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    error.value = "Invalid email";
+    return;
+  }
+
+  if (
+    password.value.length < 6 ||
+    !/[a-z]/.test(password.value) ||
+    !/[A-Z]/.test(password.value) ||
+    !/[0-9]/.test(password.value)
+  ) {
+    error.value = "Invalid password";
+    return;
+  }
+
+  if (password.value !== passwordConfirm.value) {
+    error.value = "Passwords don't match";
+    return;
+  }
+
+  const existingUser = userStore.userList.find(
+    (user) =>
+      user.username.toLowerCase() === username.value.trim().toLowerCase() ||
+      user.email.toLowerCase() === email.value.trim().toLowerCase()
+  );
+
+  if (existingUser) {
+    error.value = "User with this username or email already exists";
+    return;
+  }
+
+  error.value = "";
+
+  const newUser = {
+    username: username.value.trim(),
+    email: email.value.trim(),
+    password: password.value.trim(),
+  };
+
+  userStore.registerUser(newUser);
+
+  router.push("/");
+};
+
+const login = () => {
+  if (userLogin.value.trim() === "" || userPassword.value.trim() === "") {
+    error.value = "Enter your Username or Email and Password";
+    return;
+  }
+
+  const user = userStore.userList.find(
+    (u) =>
+      u.username.toLowerCase() === userLogin.value.trim().toLowerCase() ||
+      u.email.toLowerCase() === userLogin.value.trim().toLowerCase()
+  );
+
+  if (!user) {
+    error.value = "User does not exist";
+    return;
+  }
+
+  if (user.password !== userPassword.value) {
+    error.value = "Incorrect password";
+    return;
+  }
+
+  error.value = "";
+
+  userStore.loginUser(user);
+
+  router.push("/");
 };
 </script>
 
@@ -85,12 +168,14 @@ const addUser = () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 10px;
 }
 
 .login-wrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 10px;
 }
 
 .button {

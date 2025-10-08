@@ -4,8 +4,10 @@
       <h2 class="title">Superheroes</h2>
     </router-link>
     <Search />
-    <router-link :to="`/signin`" class="sign-in">Sign In</router-link>
-    <div>
+    <router-link :to="`/signin`" class="sign-in" v-if="!currentUser"
+      >Sign In</router-link
+    >
+    <div v-else class="menu-wrapper-container">
       <div class="menu-wrapper">
         <img
           src="../assets/icons/menu.svg"
@@ -13,20 +15,36 @@
           class="menu-icon"
           @click="toggleMenu"
         />
-        <h3 class="menu" @click="toggleMenu">Menu</h3>
+        <h3 class="currentUser" @click="toggleMenu">
+          {{ currentUser.username }}
+        </h3>
       </div>
-      <ul v-if="isMenuOpen">
-        <li>
-          <router-link :to="`/mysuperheroes`">My superheroes</router-link>
+      <ul v-if="isMenuOpen" class="menu-container">
+        <li class="menu-item">
+          <router-link :to="`/mysuperheroes`" class="menu-inner"
+            >My superheroes</router-link
+          >
         </li>
-        <li><p>Log Out</p></li>
+        <li class="menu-item">
+          <p
+            @click="
+              userStore.logoutUser();
+              toggleMenu();
+            "
+            class="menu-inner"
+          >
+            Log Out
+          </p>
+        </li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useUserStore } from "@/stores/counter";
+import { storeToRefs } from "pinia";
 import Search from "./Search.vue";
 
 const isMenuOpen = ref(false);
@@ -34,6 +52,13 @@ const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+const userStore = useUserStore();
+const { currentUser } = storeToRefs(userStore);
+
+onMounted(() => {
+  userStore.loadFromStorage();
+});
 </script>
 
 <style scoped>
@@ -65,7 +90,7 @@ const toggleMenu = () => {
   gap: 10px;
 }
 
-.menu {
+.currentUser {
   cursor: pointer;
 }
 
@@ -74,5 +99,38 @@ const toggleMenu = () => {
   background-color: rgb(87, 191, 240);
   border-radius: 50%;
   padding: 8px;
+}
+
+.menu-wrapper-container {
+  position: relative;
+}
+
+.menu-container {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: max-content;
+  min-width: 160px;
+  margin-top: 6px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.menu-item {
+  background-color: white;
+  padding: 10px;
+  list-style: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.menu-inner {
+  padding: 12px;
+  border-radius: 10px;
+  display: block;
+}
+
+.menu-item:hover .menu-inner {
+  background-color: #f1f1f1;
 }
 </style>
