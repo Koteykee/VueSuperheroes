@@ -1,8 +1,20 @@
 <template>
   <div class="container">
     <div class="titles">
-      <h3 class="title" @click="toggleSignin('signup')">Sign up</h3>
-      <h3 class="title" @click="toggleSignin('login')">Log in</h3>
+      <h3
+        class="title"
+        @click="toggleSignin('signup')"
+        :class="{ active: isSignup === 'signup' }"
+      >
+        Sign up
+      </h3>
+      <h3
+        class="title"
+        @click="toggleSignin('login')"
+        :class="{ active: isSignup === 'login' }"
+      >
+        Log in
+      </h3>
     </div>
     <div v-if="isSignup === 'signup'" class="signup-wrapper">
       <label for="username">Username</label>
@@ -145,6 +157,9 @@ const login = () => {
 .container {
   width: 60%;
   margin: 0 auto;
+  background-color: rgb(147, 143, 184);
+  padding: 10px;
+  border-radius: 20px;
 }
 
 .titles {
@@ -153,15 +168,20 @@ const login = () => {
 }
 
 .title {
-  background-color: white;
+  background-color: rgba(112, 123, 180, 0.7);
   padding: 6px;
   border-radius: 6px;
-  border: 2px solid rgb(87, 191, 240);
   cursor: pointer;
+  color: white;
+  border: 2px solid transparent;
 }
 
 .title:hover {
-  background-color: rgb(87, 191, 240);
+  background-color: rgba(100, 106, 189, 0.6);
+}
+
+.title.active {
+  border: 2px solid rgb(244, 253, 114);
 }
 
 .signup-wrapper {
@@ -189,11 +209,11 @@ const login = () => {
 
 .error {
   font-size: 16px;
-  color: red;
+  color: rgb(233, 35, 9);
 }
 
 .hint {
   font-size: 14px;
-  color: gray;
+  color: rgb(233, 233, 233);
 }
 </style>

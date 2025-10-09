@@ -67,7 +67,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  background-color: rgb(215, 224, 250);
+  background-color: rgb(202, 212, 247);
 }
 
 .title {
