@@ -21,7 +21,10 @@
       </div>
       <ul v-if="isMenuOpen" class="menu-container">
         <li class="menu-item">
-          <router-link :to="`/mysuperheroes`" class="menu-inner"
+          <router-link
+            :to="`/mysuperheroes`"
+            class="menu-inner"
+            @click="toggleMenu"
             >My superheroes</router-link
           >
         </li>

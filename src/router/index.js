@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "@/components/Home.vue";
 import SuperheroPage from "@/components/SuperheroPage/SuperheroPage.vue";
 import SignIn from "@/components/SignIn.vue";
-import MySuperheroes from "@/components/MySuperheroes.vue";
+import MySuperheroes from "@/components/MySuperheroes/MySuperheroes.vue";
+import CreateSuperhero from "@/components/MySuperheroes/CreateSuperhero.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/mysuperheroes",
       name: "MySuperheroes",
       component: MySuperheroes,
+    },
+    {
+      path: "/createsuperhero",
+      name: "CreateSuperhero",
+      component: CreateSuperhero,
     },
   ],
 });
