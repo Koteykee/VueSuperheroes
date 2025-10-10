@@ -6,10 +6,22 @@
       </router-link>
       <p class="create-text">Create superhero</p>
     </div>
+    <div></div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from "vue";
+
+const superhero = ref(null);
+
+onMounted(() => {
+  const data = localStorage.getItem("superhero");
+  if (data) {
+    superhero.value = JSON.parse(data);
+  }
+});
+</script>
 
 <style scoped>
 .create-card {

@@ -1,122 +1,202 @@
 <template>
   <div class="wrapper">
     <h3 class="main-title">Create your superhero!</h3>
-    <label for="name" class="title">Superhero name</label>
-    <input type="text" id="name" />
+    <label for="name" class="main-name">Superhero name</label>
+    <input type="text" id="name" class="main-input" />
     <p class="sub-title">Powerstats</p>
     <div class="container">
-      <label for="intelligence" class="title">Intelligence</label>
-      <input
-        type="number"
-        id="intelligence"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.intelligence"
-        @input="checkValue('intelligence')"
-        @keydown="preventInvalidInput"
-      />
-      <label for="strength" class="title">Strength</label>
-      <input
-        type="number"
-        id="strength"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.strength"
-        @input="checkValue('strength')"
-        @keydown="preventInvalidInput"
-      />
-      <label for="speed" class="title">Speed</label>
-      <input
-        type="number"
-        id="speed"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.speed"
-        @input="checkValue('speed')"
-        @keydown="preventInvalidInput"
-      />
-      <label for="durability" class="title">Durability</label>
-      <input
-        type="number"
-        id="durability"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.durability"
-        @input="checkValue('durability')"
-        @keydown="preventInvalidInput"
-      />
-      <label for="power" class="title">Power</label>
-      <input
-        type="number"
-        id="power"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.power"
-        @input="checkValue('power')"
-        @keydown="preventInvalidInput"
-      />
-      <label for="combat" class="title">Combat</label>
-      <input
-        type="number"
-        id="combat"
-        min="1"
-        max="100"
-        step="1"
-        v-model.number="stats.combat"
-        @input="checkValue('combat')"
-        @keydown="preventInvalidInput"
-      />
+      <div class="stat">
+        <label for="intelligence" class="title">Intelligence</label>
+        <input
+          type="number"
+          id="intelligence"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.intelligence"
+          @input="checkValue('intelligence')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div class="stat">
+        <label for="strength" class="title">Strength</label>
+        <input
+          type="number"
+          id="strength"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.strength"
+          @input="checkValue('strength')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div class="stat">
+        <label for="speed" class="title">Speed</label>
+        <input
+          type="number"
+          id="speed"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.speed"
+          @input="checkValue('speed')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div class="stat">
+        <label for="durability" class="title">Durability</label>
+        <input
+          type="number"
+          id="durability"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.durability"
+          @input="checkValue('durability')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div class="stat">
+        <label for="power" class="title">Power</label>
+        <input
+          type="number"
+          id="power"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.power"
+          @input="checkValue('power')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div class="stat">
+        <label for="combat" class="title">Combat</label>
+        <input
+          type="number"
+          id="combat"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.combat"
+          @input="checkValue('combat')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
     </div>
     <p class="sub-title">Appearance</p>
-    <label for="gender" class="title">Gender</label>
-    <input type="text" id="gender" />
-    <label for="race" class="title">Race</label>
-    <input type="text" id="race" />
-    <label for="height" class="title">Height</label>
-    <input
-      type="number"
-      id="height"
-      min="1"
-      max="100"
-      step="1"
-      v-model.number="stats.height"
-      @input="checkValue('height')"
-      @keydown="preventInvalidInput"
-    />
-    <label for="weight" class="title">Weight</label>
-    <input
-      type="number"
-      id="weight"
-      min="1"
-      max="100"
-      step="1"
-      v-model.number="stats.weight"
-      @input="checkValue('weight')"
-      @keydown="preventInvalidInput"
-    />
-    <label for="eyeColor" class="title">Eye Color</label>
-    <input type="text" id="eyeColor" />
-    <label for="hairColor" class="title">Hair Color</label>
-    <input type="text" id="hairColor" />
+    <div class="container">
+      <div>
+        <label for="gender" class="title">Gender</label>
+        <input
+          v-model="stats.gender"
+          type="text"
+          id="gender"
+          class="text-input"
+        />
+      </div>
+      <div>
+        <label for="race" class="title">Race</label>
+        <input v-model="stats.race" type="text" id="race" class="text-input" />
+      </div>
+      <div>
+        <label for="height" class="title">Height</label>
+        <input
+          type="number"
+          id="height"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.height"
+          @input="checkValue('height')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div>
+        <label for="weight" class="title">Weight</label>
+        <input
+          type="number"
+          id="weight"
+          min="1"
+          max="100"
+          step="1"
+          v-model.number="stats.weight"
+          @input="checkValue('weight')"
+          @keydown="preventInvalidInput"
+          class="input"
+        />
+      </div>
+      <div>
+        <label for="eyeColor" class="title">Eye Color</label>
+        <input
+          v-model="stats.eyeColor"
+          type="text"
+          id="eyeColor"
+          class="text-input"
+        />
+      </div>
+      <div>
+        <label for="hairColor" class="title">Hair Color</label>
+        <input
+          v-model="stats.hairColor"
+          type="text"
+          id="hairColor"
+          class="text-input"
+        />
+      </div>
+    </div>
     <p class="sub-title">Biography</p>
-    <label for="fullName" class="title">Full Name</label>
-    <input type="text" id="fullName" />
-    <label for="placeOfBirth" class="title">Place Of Birth</label>
-    <input type="text" id="placeOfBirth" />
-    <label for="alignment" class="title">Alignment (Good/Bad)</label>
-    <input type="text" id="alignment" />
-    <label for="occupation" class="title">Occupation</label>
-    <input type="text" id="occupation" />
+    <div class="biography-container">
+      <div class="biography-stat">
+        <label for="fullName" class="main-name">Full Name</label>
+        <input
+          v-model="stats.fullName"
+          type="text"
+          id="fullName"
+          class="main-input"
+        />
+      </div>
+      <div class="biography-stat">
+        <label for="placeOfBirth" class="main-name">Place Of Birth</label>
+        <input
+          v-model="stats.placeOfBirth"
+          type="text"
+          id="placeOfBirth"
+          class="main-input"
+        />
+      </div>
+      <div class="biography-stat">
+        <label for="alignment" class="main-name">Alignment</label>
+        <select v-model="stats.alignment" id="alignment" class="select">
+          <option disabled value="" selected>Select alignment</option>
+          <option value="good">Good</option>
+          <option value="bad">Bad</option>
+        </select>
+      </div>
+      <div class="biography-stat">
+        <label for="occupation" class="main-name">Occupation</label>
+        <input
+          v-model="stats.occupation"
+          type="text"
+          id="occupation"
+          class="main-input"
+        />
+      </div>
+    </div>
+    <p v-if="error !== ''" class="error">{{ error }}</p>
+    <button class="button" @click="createSuperhero">Create superhero</button>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 
 const stats = reactive({
   intelligence: null,
@@ -125,8 +205,16 @@ const stats = reactive({
   durability: null,
   power: null,
   combat: null,
+  gender: "",
+  race: "",
   height: null,
   weight: null,
+  eyeColor: "",
+  hairColor: "",
+  fullName: "",
+  placeOfBirth: "",
+  alignment: "",
+  occupation: "",
 });
 
 const checkValue = (field) => {
@@ -145,6 +233,36 @@ const preventInvalidInput = (e) => {
     e.preventDefault();
   }
 };
+
+const error = ref("");
+
+const createSuperhero = () => {
+  if (
+    intelligence.value === null ||
+    strength.value === null ||
+    speed.value === null ||
+    durability.value === null ||
+    power.value === null ||
+    combat.value === null ||
+    height.value === null ||
+    weight.value === null ||
+    gender.value.trim() === "" ||
+    race.value.trim() === "" ||
+    eyeColor.value.trim() === "" ||
+    hairColor.value.trim() === "" ||
+    fullName.value.trim() === "" ||
+    placeOfBirth.value.trim() === "" ||
+    alignment.value.trim() === "" ||
+    occupation.value.trim() === ""
+  ) {
+    error.value = "Fill in all fields";
+    return;
+  }
+
+  error.value = "";
+
+  localStorage.setItem("superhero", JSON.stringify(stats));
+};
 </script>
 
 <style scoped>
@@ -152,24 +270,95 @@ const preventInvalidInput = (e) => {
   width: 60%;
   margin: 0 auto;
   background-color: rgb(170, 166, 206);
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 20px;
 }
 
 .container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px 20px;
+}
+
+.biography-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.biography-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  display: inline-block;
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input {
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+}
+
+.select {
+  width: 50%;
+  padding: 5px;
+  font-size: 18px;
 }
 
 .main-title {
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
 .sub-title {
-  padding: 10px;
+  padding: 10px 0;
   font-size: 18px;
   text-decoration: underline;
 }
 
-.title {
-  padding: 0 10px;
+.main-name {
+  padding-right: 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.main-input {
+  padding: 5px;
+  width: 50%;
+  font-size: 18px;
+}
+
+.text-input {
+  padding: 5px;
+  width: 100%;
+  font-size: 18px;
+}
+
+.button {
+  margin-top: 10px;
+  width: 100%;
+  font-size: 16px;
+  padding: 4px;
+  background-color: rgb(112, 218, 191);
+  border-radius: 4px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.error {
+  font-size: 18px;
+  color: rgb(233, 35, 9);
+  margin-top: 10px;
 }
 </style>
