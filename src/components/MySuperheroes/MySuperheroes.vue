@@ -6,21 +6,37 @@
       </router-link>
       <p class="create-text">Create superhero</p>
     </div>
-    <div></div>
+    <div class="heroes-list">
+      <div v-for="hero in superheroes" :key="hero.id" class="hero-wrapper">
+        <router-link :to="`/superhero/${hero.id}`" class="hero-card">
+          <span class="hero-link">
+            {{ hero.name }}
+          </span>
+        </router-link>
+        <div class="delete-wrapper">
+          <button class="delete" @click="deleteHero(hero.id)">Delete</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 
-const superhero = ref(null);
+const superheroes = ref([]);
 
 onMounted(() => {
-  const data = localStorage.getItem("superhero");
+  const data = localStorage.getItem("superheroes");
   if (data) {
-    superhero.value = JSON.parse(data);
+    superheroes.value = JSON.parse(data);
   }
 });
+
+function deleteHero(id) {
+  superheroes.value = superheroes.value.filter((hero) => hero.id !== id);
+  localStorage.setItem("superheroes", JSON.stringify(superheroes.value));
+}
 </script>
 
 <style scoped>
@@ -48,7 +64,63 @@ onMounted(() => {
   color: rgb(72, 69, 100);
 }
 
+.plus:hover {
+  color: rgb(46, 38, 75);
+}
+
 .create-text {
   font-size: 20px;
+}
+
+.heroes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.hero-card {
+  width: 300px;
+  height: 400px;
+  border: 3px solid rgb(72, 69, 100);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #a6a7d6;
+}
+
+.hero-link {
+  text-decoration: none;
+  font-size: 24px;
+  color: rgb(72, 69, 100);
+  font-weight: bold;
+  padding: 10px;
+  transition: color 0.3s;
+}
+
+.hero-link:hover {
+  color: rgb(46, 38, 75);
+}
+
+.delete-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.delete {
+  padding: 8px 16px;
+  background-color: #e76c6c;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete:hover {
+  background-color: #e75858;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h3 class="main-title">Create your superhero!</h3>
     <label for="name" class="main-name">Superhero name</label>
-    <input type="text" id="name" class="main-input" />
+    <input type="text" id="name" class="main-input" v-model="stats.name" />
     <p class="sub-title">Powerstats</p>
     <div class="container">
       <div class="stat">
@@ -111,10 +111,8 @@
           type="number"
           id="height"
           min="1"
-          max="100"
           step="1"
           v-model.number="stats.height"
-          @input="checkValue('height')"
           @keydown="preventInvalidInput"
           class="input"
         />
@@ -125,10 +123,8 @@
           type="number"
           id="weight"
           min="1"
-          max="100"
           step="1"
           v-model.number="stats.weight"
-          @input="checkValue('weight')"
           @keydown="preventInvalidInput"
           class="input"
         />
@@ -197,8 +193,12 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const stats = reactive({
+  name: "",
   intelligence: null,
   strength: null,
   speed: null,
@@ -238,22 +238,23 @@ const error = ref("");
 
 const createSuperhero = () => {
   if (
-    intelligence.value === null ||
-    strength.value === null ||
-    speed.value === null ||
-    durability.value === null ||
-    power.value === null ||
-    combat.value === null ||
-    height.value === null ||
-    weight.value === null ||
-    gender.value.trim() === "" ||
-    race.value.trim() === "" ||
-    eyeColor.value.trim() === "" ||
-    hairColor.value.trim() === "" ||
-    fullName.value.trim() === "" ||
-    placeOfBirth.value.trim() === "" ||
-    alignment.value.trim() === "" ||
-    occupation.value.trim() === ""
+    stats.name.trim() === "" ||
+    stats.intelligence === null ||
+    stats.strength === null ||
+    stats.speed === null ||
+    stats.durability === null ||
+    stats.power === null ||
+    stats.combat === null ||
+    stats.height === null ||
+    stats.weight === null ||
+    stats.gender.trim() === "" ||
+    stats.race.trim() === "" ||
+    stats.eyeColor.trim() === "" ||
+    stats.hairColor.trim() === "" ||
+    stats.fullName.trim() === "" ||
+    stats.placeOfBirth.trim() === "" ||
+    stats.alignment.trim() === "" ||
+    stats.occupation.trim() === ""
   ) {
     error.value = "Fill in all fields";
     return;
@@ -261,7 +262,49 @@ const createSuperhero = () => {
 
   error.value = "";
 
-  localStorage.setItem("superhero", JSON.stringify(stats));
+  const newHero = {
+    id: "local-" + Date.now(),
+    name: stats.name,
+    powerstats: {
+      intelligence: stats.intelligence,
+      strength: stats.strength,
+      speed: stats.speed,
+      durability: stats.durability,
+      power: stats.power,
+      combat: stats.combat,
+    },
+    appearance: {
+      gender: stats.gender,
+      race: stats.race,
+      height: [0, `${stats.height} cm`],
+      weight: [0, `${stats.weight} kg`],
+      eyeColor: stats.eyeColor,
+      hairColor: stats.hairColor,
+    },
+    biography: {
+      fullName: stats.fullName,
+      placeOfBirth: stats.placeOfBirth,
+      alignment: stats.alignment,
+      alterEgos: "None",
+      aliases: ["None"],
+      firstAppearance: "-",
+      publisher: "You",
+    },
+    work: {
+      occupation: stats.occupation,
+      base: "-",
+    },
+    connections: {
+      groupAffiliation: "-",
+      relatives: "-",
+    },
+  };
+
+  const superheroes = JSON.parse(localStorage.getItem("superheroes") || "[]");
+  superheroes.push(newHero);
+  localStorage.setItem("superheroes", JSON.stringify(superheroes));
+
+  router.push(`/superhero/${newHero.id}`);
 };
 </script>
 

@@ -2,7 +2,11 @@
   <div class="superhero-container">
     <div class="card-wrapper">
       <div class="superhero-wrapper">
-        <img :src="superhero.images.lg" :alt="superhero.name" />
+        <img
+          v-if="superhero.images?.lg"
+          :src="superhero.images.lg"
+          :alt="superhero.name"
+        />
         <p class="name">{{ superhero.name }}</p>
       </div>
       <div class="titles">
@@ -121,18 +125,27 @@ import { SUPERHERO_API } from "@/config/config";
 const route = useRoute();
 const superhero = ref([]);
 
-const getSuperheroById = async () => {
+const loadSuperhero = async () => {
   try {
-    const result = await axios.get(
-      `${SUPERHERO_API}/id/${route.params.id}.json`
-    );
-    return result.data;
+    const id = route.params.id;
+
+    if (id.startsWith("local-")) {
+      const stored = JSON.parse(localStorage.getItem("superheroes") || "[]");
+      const localHero = stored.find((hero) => hero.id === id);
+
+      if (localHero) {
+        return localHero;
+      }
+    } else {
+      const result = await axios.get(`${SUPERHERO_API}/id/${id}.json`);
+      return result.data;
+    }
   } catch (err) {
     console.log(err);
   }
 };
 
-superhero.value = await getSuperheroById();
+superhero.value = await loadSuperhero();
 
 const isTitle = ref("powerstats");
 
@@ -160,13 +173,13 @@ const toggleTitle = (val) => {
   flex-direction: column;
   align-items: center;
   background-color: rgb(147, 143, 184);
-  padding: 30px 30px 0 30px;
+  padding: 30px;
   border-radius: 20px;
 }
 
 .name {
   font-size: 26px;
-  padding: 20px 0;
+  padding-top: 10px;
 }
 
 .titles {
