@@ -25,12 +25,17 @@ const { superhero } = defineProps({
   text-align: center;
 }
 
+.superhero-card a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .superhero-img {
   cursor: pointer;
 }
 
 .superhero-name {
-  display: inline-block;
   cursor: pointer;
 }
 

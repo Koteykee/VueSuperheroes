@@ -79,6 +79,7 @@ const getSuperhero = (searchResult) => {
 <style scoped>
 .search-wrapper {
   width: 30%;
+  min-width: 310px;
   display: flex;
   flex-direction: column;
   position: relative;

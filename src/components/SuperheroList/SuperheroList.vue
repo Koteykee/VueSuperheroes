@@ -35,4 +35,22 @@ superheroes.value = await getSuperheroes();
   gap: 20px;
   list-style: none;
 }
+
+@media (max-width: 1460px) {
+  .superhero-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1060px) {
+  .superhero-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 740px) {
+  .superhero-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 </style>
