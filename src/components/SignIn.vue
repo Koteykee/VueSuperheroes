@@ -46,7 +46,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/counter";
+import { useUserStore } from "@/stores/userStore";
 
 const username = ref("");
 const email = ref("");
@@ -113,6 +113,7 @@ const addUser = () => {
   error.value = "";
 
   const newUser = {
+    id: Date.now(),
     username: username.value.trim(),
     email: email.value.trim(),
     password: password.value.trim(),

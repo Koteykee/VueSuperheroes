@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="create-card">
-      <router-link :to="`/createsuperhero`" class="create-box">
+      <router-link :to="`/superheroform`" class="create-box">
         <span class="plus">+</span>
       </router-link>
-      <p class="create-text">Create superhero</p>
+      <p class="create-text">Create new superhero</p>
     </div>
     <div class="heroes-list">
       <div v-for="hero in superheroes" :key="hero.id" class="hero-wrapper">
@@ -13,7 +13,8 @@
             {{ hero.name }}
           </span>
         </router-link>
-        <div class="delete-wrapper">
+        <div class="buttons-wrapper">
+          <button class="edit" @click="editHero(hero.id)">Edit</button>
           <button class="delete" @click="deleteHero(hero.id)">Delete</button>
         </div>
       </div>
@@ -23,20 +24,25 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useUserStore } from "@/stores/userStore";
 
 const superheroes = ref([]);
+const userStore = useUserStore();
 
 onMounted(() => {
-  const data = localStorage.getItem("superheroes");
-  if (data) {
-    superheroes.value = JSON.parse(data);
+  const data = JSON.parse(localStorage.getItem("superheroes") || "[]");
+  const currentUser = userStore.currentUser;
+  if (currentUser) {
+    superheroes.value = data.filter((hero) => hero.userId === currentUser.id);
   }
 });
 
-function deleteHero(id) {
+const editHero = (id) => {};
+
+const deleteHero = (id) => {
   superheroes.value = superheroes.value.filter((hero) => hero.id !== id);
   localStorage.setItem("superheroes", JSON.stringify(superheroes.value));
-}
+};
 </script>
 
 <style scoped>
@@ -105,10 +111,24 @@ function deleteHero(id) {
   color: rgb(46, 38, 75);
 }
 
-.delete-wrapper {
+.buttons-wrapper {
   display: flex;
   justify-content: center;
+  gap: 10px;
   margin: 10px;
+}
+
+.edit {
+  padding: 8px 16px;
+  background-color: rgb(87, 191, 240);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit:hover {
+  background-color: rgb(75, 171, 216);
 }
 
 .delete {

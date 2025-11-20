@@ -33,6 +33,7 @@
             @click="
               userStore.logoutUser();
               toggleMenu();
+              goMainPage();
             "
             class="menu-inner"
           >
@@ -46,14 +47,20 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useUserStore } from "@/stores/counter";
+import { useUserStore } from "@/stores/userStore";
 import { storeToRefs } from "pinia";
 import Search from "./Search.vue";
+import { useRouter } from "vue-router";
 
 const isMenuOpen = ref(false);
+const router = useRouter();
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
+};
+
+const goMainPage = () => {
+  router.push("/");
 };
 
 const userStore = useUserStore();

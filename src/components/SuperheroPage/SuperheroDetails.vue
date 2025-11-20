@@ -172,6 +172,7 @@ const toggleTitle = (val) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 1260px;
   background-color: rgb(147, 143, 184);
   padding: 30px;
   border-radius: 20px;
@@ -245,5 +246,9 @@ const toggleTitle = (val) => {
 
 .biography-info {
   font-size: 20px;
+}
+
+img {
+  max-width: 1200px;
 }
 </style>

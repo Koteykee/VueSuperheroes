@@ -2,7 +2,14 @@
   <div class="wrapper">
     <h3 class="main-title">Create your superhero!</h3>
     <label for="name" class="main-name">Superhero name</label>
-    <input type="text" id="name" class="main-input" v-model="stats.name" />
+    <input
+      type="text"
+      id="name"
+      class="main-input"
+      v-model="stats.name"
+    /><br /><br />
+    <label for="image" class="main-name">Superhero image</label>
+    <input type="text" id="image" class="main-input" v-model="stats.image" />
     <p class="sub-title">Powerstats</p>
     <div class="container">
       <div class="stat">
@@ -194,11 +201,15 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
 
 const router = useRouter();
+const userStore = useUserStore();
+const currentUser = userStore.currentUser;
 
 const stats = reactive({
   name: "",
+  image: "",
   intelligence: null,
   strength: null,
   speed: null,
@@ -264,6 +275,7 @@ const createSuperhero = () => {
 
   const newHero = {
     id: "local-" + Date.now(),
+    userId: currentUser.id,
     name: stats.name,
     powerstats: {
       intelligence: stats.intelligence,
@@ -297,6 +309,9 @@ const createSuperhero = () => {
     connections: {
       groupAffiliation: "-",
       relatives: "-",
+    },
+    images: {
+      lg: `${stats.image}`,
     },
   };
 
