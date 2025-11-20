@@ -24,10 +24,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
 const superheroes = ref([]);
 const userStore = useUserStore();
+const router = useRouter();
 
 onMounted(() => {
   const data = JSON.parse(localStorage.getItem("superheroes") || "[]");
@@ -37,7 +39,9 @@ onMounted(() => {
   }
 });
 
-const editHero = (id) => {};
+const editHero = (id) => {
+  router.push(`/superheroform/${id}`);
+};
 
 const deleteHero = (id) => {
   superheroes.value = superheroes.value.filter((hero) => hero.id !== id);

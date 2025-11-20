@@ -194,18 +194,23 @@
       </div>
     </div>
     <p v-if="error !== ''" class="error">{{ error }}</p>
-    <button class="button" @click="createSuperhero">Create superhero</button>
+    <button class="button" @click="createSuperhero">
+      {{ heroId ? "Edit superhero" : "Create superhero" }}
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { ref, reactive, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
+const route = useRoute();
+const heroId = route.params.id;
 const router = useRouter();
 const userStore = useUserStore();
 const currentUser = userStore.currentUser;
+const error = ref("");
 
 const stats = reactive({
   name: "",
@@ -228,6 +233,33 @@ const stats = reactive({
   occupation: "",
 });
 
+onMounted(() => {
+  if (heroId) {
+    const superheroes = JSON.parse(localStorage.getItem("superheroes") || "[]");
+    const hero = superheroes.find((h) => h.id === heroId);
+    if (hero) {
+      stats.name = hero.name;
+      stats.image = hero.images.lg;
+      stats.intelligence = hero.powerstats.intelligence;
+      stats.strength = hero.powerstats.strength;
+      stats.speed = hero.powerstats.speed;
+      stats.durability = hero.powerstats.durability;
+      stats.power = hero.powerstats.power;
+      stats.combat = hero.powerstats.combat;
+      stats.gender = hero.appearance.gender;
+      stats.race = hero.appearance.race;
+      stats.height = Number(hero.appearance.height[1].replace(" cm", ""));
+      stats.weight = Number(hero.appearance.weight[1].replace(" kg", ""));
+      stats.eyeColor = hero.appearance.eyeColor;
+      stats.hairColor = hero.appearance.hairColor;
+      stats.fullName = hero.biography.fullName;
+      stats.placeOfBirth = hero.biography.placeOfBirth;
+      stats.alignment = hero.biography.alignment;
+      stats.occupation = hero.work.occupation;
+    }
+  }
+});
+
 const checkValue = (field) => {
   let val = stats[field];
 
@@ -244,8 +276,6 @@ const preventInvalidInput = (e) => {
     e.preventDefault();
   }
 };
-
-const error = ref("");
 
 const createSuperhero = () => {
   if (
@@ -272,9 +302,10 @@ const createSuperhero = () => {
   }
 
   error.value = "";
+  const superheroes = JSON.parse(localStorage.getItem("superheroes") || "[]");
 
   const newHero = {
-    id: "local-" + Date.now(),
+    id: heroId || "local-" + Date.now(),
     userId: currentUser.id,
     name: stats.name,
     powerstats: {
@@ -315,8 +346,15 @@ const createSuperhero = () => {
     },
   };
 
-  const superheroes = JSON.parse(localStorage.getItem("superheroes") || "[]");
-  superheroes.push(newHero);
+  if (heroId) {
+    const index = superheroes.findIndex((h) => h.id === heroId);
+    if (index !== -1) {
+      superheroes[index] = newHero;
+    }
+  } else {
+    superheroes.push(newHero);
+  }
+
   localStorage.setItem("superheroes", JSON.stringify(superheroes));
 
   router.push(`/superhero/${newHero.id}`);

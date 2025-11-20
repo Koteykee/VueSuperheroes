@@ -30,7 +30,7 @@ const router = createRouter({
       component: MySuperheroes,
     },
     {
-      path: "/superheroform",
+      path: "/superheroform/:id?",
       name: "SuperheroForm",
       component: SuperheroForm,
     },
