@@ -117,18 +117,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import axios from "axios";
 import { SUPERHERO_API } from "@/config/config";
 
 const route = useRoute();
-const superhero = ref([]);
+const superhero = ref({});
 
-const loadSuperhero = async () => {
+const loadSuperhero = async (id) => {
   try {
-    const id = route.params.id;
-
     if (id.startsWith("local-")) {
       const stored = JSON.parse(localStorage.getItem("superheroes") || "[]");
       const localHero = stored.find((hero) => hero.id === id);
@@ -145,7 +143,14 @@ const loadSuperhero = async () => {
   }
 };
 
-superhero.value = await loadSuperhero();
+superhero.value = await loadSuperhero(route.params.id);
+
+watch(
+  () => route.params.id,
+  async (newId) => {
+    superhero.value = await loadSuperhero(newId);
+  }
+);
 
 const isTitle = ref("powerstats");
 
